@@ -1,0 +1,45 @@
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.veracode.verademo.MigrateToSpringBoot35
+displayName: Migrate VeraDemo to Spring Boot 3.5
+description: >
+  Full migration of the VeraDemo WAR from Spring Boot 2.7 to the latest supported
+  Spring Boot 3.5. Upgrades the parent/BOM (realigning managed transitive versions),
+  migrates javax.* to jakarta.*, upgrades the build to Java 17, applies Spring property
+  and Spring Security 6 migrations, and bumps the non-Spring direct dependencies.
+recipeList:
+  # Core upgrade. Chains 3.0..3.5, javax->jakarta (servlet, mail, jaxb, jstl deps),
+  # Java 17 build upgrade, Spring Security 6.5, property-key migrations, and the
+  # parent + spring-boot-dependencies BOM + spring-boot-maven-plugin version bumps.
+  - org.openrewrite.java.spring.boot3.UpgradeSpringBoot_3_5
+
+  # Belt-and-braces: guarantee the build targets Java 17 (project has no java.version
+  # property today; this adds/normalizes it).
+  - org.openrewrite.java.migrate.UpgradeBuildToJava17
+
+  # commons-fileupload backs the removed CommonsMultipartResolver; drop it.
+  - org.openrewrite.maven.RemoveDependency:
+      groupId: commons-fileupload
+      artifactId: commons-fileupload
+
+  # Non-Spring direct dependencies (not governed by the Spring BOM) -> latest release.
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.keycloak
+      artifactId: keycloak-saml-core
+      newVersion: latest.release
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: com.mysql
+      artifactId: mysql-connector-j
+      newVersion: latest.release
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: commons-io
+      artifactId: commons-io
+      newVersion: latest.release
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.mindrot
+      artifactId: jbcrypt
+      newVersion: latest.release
+  - org.openrewrite.java.dependencies.UpgradeDependencyVersion:
+      groupId: org.apache.commons
+      artifactId: commons-collections4
+      newVersion: latest.release

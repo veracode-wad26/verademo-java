@@ -1,5 +1,6 @@
 package com.veracode.verademo.utils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("session")
 public class User implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1L;
 
 	private String userName;

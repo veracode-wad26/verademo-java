@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -13,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -25,12 +25,12 @@ public class ToolsController {
 	@Autowired
 	ServletContext context;
 
-	@RequestMapping(value = "/tools", method = RequestMethod.GET)
+	@GetMapping("/tools")
 	public String tools() {
 		return "tools";
 	}
 
-	@RequestMapping(value = "/tools", method = RequestMethod.POST)
+	@PostMapping("/tools")
 	public String tools(@RequestParam(value = "host", required = false) String host, @RequestParam(value = "fortunefile", required = false) String fortuneFile, Model model) {
 		model.addAttribute("ping", host != null ? ping(host) : "");
 

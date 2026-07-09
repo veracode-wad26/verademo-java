@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import com.veracode.verademo.commands.BlabberCommand;
 import com.veracode.verademo.model.Blab;
@@ -24,8 +24,8 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -43,7 +43,7 @@ public class BlabController {
 			+ "LEFT JOIN comments ON blabs.blabid = comments.blabid WHERE listeners.listener = ? "
 			+ "GROUP BY blabs.blabid ORDER BY blabs.timestamp DESC LIMIT %d OFFSET %d;";
 
-	@RequestMapping(value = "/feed", method = RequestMethod.GET)
+	@GetMapping("/feed")
 	public String showFeed(
 			@RequestParam(value = "type", required = false) String type,
 			Model model,
@@ -142,7 +142,7 @@ public class BlabController {
 		return "feed";
 	}
 
-	@RequestMapping(value = "/morefeed", method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@GetMapping(value = "/morefeed", produces = "text/html;charset=UTF-8")
 	@ResponseBody
 	public String getMoreFeed(
 			@RequestParam(value = "count", required = true) String count,
@@ -196,7 +196,7 @@ public class BlabController {
 		return ret.toString();
 	}
 
-	@RequestMapping(value = "/feed", method = RequestMethod.POST)
+	@PostMapping("/feed")
 	public String processFeed(
 			@RequestParam(value = "blab", required = true) String blab,
 			Model model,
@@ -260,7 +260,7 @@ public class BlabController {
 		return nextView;
 	}
 
-	@RequestMapping(value = "/blab", method = RequestMethod.GET)
+	@GetMapping("/blab")
 	public String showBlab(
 			@RequestParam(value = "blabid", required = true) Integer blabid,
 			Model model,
@@ -354,7 +354,7 @@ public class BlabController {
 		return nextView;
 	}
 
-	@RequestMapping(value = "/blab", method = RequestMethod.POST)
+	@PostMapping("/blab")
 	public String processBlab(
 			@RequestParam(value = "comment", required = true) String comment,
 			@RequestParam(value = "blabid", required = true) Integer blabid,
@@ -422,7 +422,7 @@ public class BlabController {
 		return nextView;
 	}
 
-	@RequestMapping(value = "/blabbers", method = RequestMethod.GET)
+	@GetMapping("/blabbers")
 	public String showBlabbers(
 			@RequestParam(value = "sort", required = false) String sort,
 			Model model,
@@ -504,7 +504,7 @@ public class BlabController {
 		return nextView;
 	}
 
-	@RequestMapping(value = "/blabbers", method = RequestMethod.POST)
+	@PostMapping("/blabbers")
 	public String processBlabbers(
 			@RequestParam(value = "blabberUsername", required = true) String blabberUsername,
 			@RequestParam(value = "command", required = true) String command,

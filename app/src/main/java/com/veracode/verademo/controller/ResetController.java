@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.Random;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.veracode.verademo.utils.Constants;
 import com.veracode.verademo.utils.User;
@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -66,14 +66,14 @@ public class ResetController {
 			User.create("scottrum", "Scott Rumrill", "Scott Rumrill"),
 			User.create("scottsim", "Scott Simpson", "Scott Simpson") };
 
-	@RequestMapping(value = "/reset", method = RequestMethod.GET)
+	@GetMapping("/reset")
 	public String showReset() {
 		logger.info("Entering showReset");
 
 		return "reset";
 	}
 
-	@RequestMapping(value = "/reset", method = RequestMethod.POST)
+	@PostMapping("/reset")
 	public String processReset(
 			@RequestParam(value = "confirm", required = true) String confirm,
 			@RequestParam(value = "primary", required = false) String primary,

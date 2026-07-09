@@ -20,15 +20,15 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import com.veracode.verademo.model.Blabber;
 import com.veracode.verademo.utils.Constants;
@@ -44,6 +44,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -70,7 +72,7 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@GetMapping("/login")
 	public String showLogin(
 			@RequestParam(value = "target", required = false) String target,
 			@RequestParam(value = "username", required = false) String username,
@@ -124,7 +126,7 @@ public class UserController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping("/login")
 	public String processLogin(
 			@RequestParam(value = "user", required = true) String username,
 			@RequestParam(value = "password", required = true) String password,
@@ -244,7 +246,7 @@ public class UserController {
 		return nextView;
 	}
 
-	@RequestMapping(value = "/password-hint", method = RequestMethod.GET)
+	@GetMapping("/password-hint")
 	@ResponseBody
 	public String showPasswordHint(String username) {
 		logger.info("Entering password-hint with username: " + username);
@@ -298,14 +300,14 @@ public class UserController {
 		return Utils.redirect("login");
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@GetMapping("/register")
 	public String showRegister() {
 		logger.info("Entering showRegister");
 
 		return "register";
 	}
 
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@PostMapping("/register")
 	public String processRegister(
 			@RequestParam(value = "user") String username,
 			HttpServletRequest httpRequest,
@@ -336,14 +338,14 @@ public class UserController {
 		return "register";
 	}
 
-	@RequestMapping(value = "/register-finish", method = RequestMethod.GET)
+	@GetMapping("/register-finish")
 	public String showRegisterFinish() {
 		logger.info("Entering showRegisterFinish");
 
 		return "register-finish";
 	}
 
-	@RequestMapping(value = "/register-finish", method = RequestMethod.POST)
+	@PostMapping("/register-finish")
 	public String processRegisterFinish(
 			@RequestParam(value = "password", required = true) String password,
 			@RequestParam(value = "cpassword", required = true) String cpassword,
@@ -443,7 +445,7 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/profile", method = RequestMethod.GET)
+	@GetMapping("/profile")
 	public String showProfile(
 			@RequestParam(value = "type", required = false) String type,
 			Model model,
@@ -534,7 +536,7 @@ public class UserController {
 		return "profile";
 	}
 
-	@RequestMapping(value = "/profile", method = RequestMethod.POST, produces = "application/json")
+	@PostMapping(value = "/profile", produces = "application/json")
 	@ResponseBody
 	public String processProfile(
 			@RequestParam(value = "realName", required = true) String realName,
@@ -654,7 +656,7 @@ public class UserController {
 		return String.format(respTemplate, username.toLowerCase(), realName, blabName);
 	}
 
-	@RequestMapping(value = "/downloadprofileimage", method = RequestMethod.GET)
+	@GetMapping("/downloadprofileimage")
 	public String downloadImage(
 			@RequestParam(value = "image", required = true) String imageName,
 			HttpServletRequest request,
